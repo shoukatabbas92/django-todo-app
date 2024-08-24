@@ -1,0 +1,68 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <title>Django todo app</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+
+  <div class="container">
+  <h2>Wel come to Todo (basic) App</h2>
+  <form action="{% url "create_todo" %}" method='POST'>
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="title">Title:</label>
+      <input type="text" class="form-control" id="title" placeholder="Enter title" name="title">
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea  class="form-control" name="description" ></textarea>
+      
+    </div>
+    {% comment %} <div class="checkbox">
+      <label><input type="checkbox" name="remember"> Remember me</label>
+    </div> {% endcomment %}
+    <button type="submit" class="btn btn-dark">Submit</button>
+  </form>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Sr No</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for todo in todos%}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{todo.title}}</td>
+        <td>{{todo.description}}</td>
+        <td>
+          {%if todo.completed%}
+          <span class= "badge badge-success">Completed</span>
+          {% else %}
+          <a class ="btn btn-sm btn-dark" href="{% url 'complete_todo' todo.id %}">Complete</a>
+          {% endif %}
+          <a class ="btn btn-sm btn-danger" href="{% url 'delete_todo' todo.id %}">Delete</a>
+        </td>
+
+        
+      </tr>
+      {% endfor %}
+
+    </tbody>
+
+  </table>
+  </div>
+
+  </body>
+  </html>
